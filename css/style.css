@@ -1,0 +1,122 @@
+/*= Reset
+------------------------------------------------- */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-size:100%;font-family:inherit;vertical-align:baseline}
+
+/*= Global
+------------------------------------------------- */
+body, a {
+  color: #717073;
+}
+body, a, div, form, input {
+  font: 400 18px/20px 'Roboto',Arial,sans-serif;
+}
+
+/*= Vieport
+------------------------------------------------- */
+#app-viewport {  
+}
+#app-viewport section.hide {
+  bottom: 200%;
+  top: -170px;
+}
+
+#app-viewport section header {
+  display: block;
+  padding: 8px 10px;
+}
+#app-viewport section header .left {
+  position: absolute;
+  width: 60px;
+  top: 0;
+  left: 0;
+  min-height: auto;
+  padding: 8px 0 0 10px;
+}
+#app-viewport section header .center {
+  min-height: auto;
+  text-align: center;
+}
+
+/*= Viewport Sections
+------------------------------------------------- */
+section#login-frame {
+  -webkit-box-align: center;
+  box-align: center;
+  -webkit-box-pack: center;
+  box-pack: center;
+  background-image: -webkit-gradient(radial,50%,0,50%,250,color-stop(0%,#1B2835),color-stop(100%,#161616));
+  background-image: -webkit-radial-gradient(center,circle cover,#1B2835 0,#161616 250px);
+  background-image: radial-gradient(center,circle cover,#1B2835 0,#161616 250px);
+}
+
+section#main-frame {
+  background-color: #fff;
+  -webkit-transition: all .25s ease-in-out; 
+  -moz-transition: all .25s ease-in-out; 
+  transition: all .25s ease-in-out;
+  min-width: 320px;
+}
+
+section#accounts-frame {
+  width: 260px;
+  background-color: #222;
+  color: #eee;
+}
+
+section#settings-frame {
+  background-color: #ccc;
+}
+
+/*= Specifics
+------------------------------------------------- */
+
+section#main-frame.reveal {
+  -webkit-transform: translateX(260px);
+}
+
+section#main-frame article {
+  padding: 20px;
+}
+
+section#main-frame #account {
+  padding: 11px;
+}
+
+section#main-frame #account i {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #ccc;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  margin-bottom: 3px;
+}
+
+section#accounts-frame.reveal {
+}
+
+section#accounts-frame .accounts-container {
+  padding: 20px;
+  max-width: 220px;
+}
+
+section#accounts-frame .accounts-container .account-box {
+  border: 2px solid #555;
+  padding: 15px 4px;
+  margin: 10px 0;
+  text-align: center;
+  border-radius: 4px;
+}
+
+section#accounts-frame .accounts-container .account-box.active {
+  background-color: #2187e7;
+  color: #fff;
+}
+
+section#accounts-frame .accounts-container .account-box.add {
+  border-style: dashed;
+}

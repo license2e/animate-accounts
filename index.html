@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html manifest="" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <title>animate settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-title" content="animate settings" />
+    <link href="favicon.ico" rel="shortcut icon">
+    <link href="favicon.gif" rel="icon" type="image/gif">
+    <link id="icon" href="apple-touch-icon-57x57.png" rel="apple-touch-icon-precomposed" />
+    <link id="icon" href="apple-touch-icon-72x72.png" rel="apple-touch-icon-precomposed" sizes="72x72" />
+    <link id="icon" href="apple-touch-icon-114x114.png" rel="apple-touch-icon-precomposed" sizes="114x114" />
+    <style type="text/css">
+      html, body { margin: 0; padding: 0; background: #222; color: #717073; height: 100%; }
+      h1 { font-size: 14px }
+      #app-viewport { padding: 25px; }
+      #app-viewport section { z-index: 100; position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: -webkit-box; display: box; -webkit-box-orient: vertical; box-orient: vertical; opacity: 1; }
+    </style>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+  </head>
+  <body id="app">
+    <div id="app-viewport">
+      <section id="accounts-frame" style="display: none;">
+        <header>
+          <h1 class="center">Accounts</h1>
+        </header>
+        <div class="accounts-container">
+          <div class="account-box active">
+            Account #1
+          </div>
+          <div class="account-box">
+            Account #2
+          </div>
+          <div class="account-box add">
+            +
+          </div>
+        </div>
+      </section>
+      <section id="main-frame" class="">
+        <header>
+          <a id="account" href="#account" class="left"><i></i><i></i><i></i></a>
+          <h1 class="center">Main</h1>
+        </header>
+        <article>
+          <p>
+            [space intentionally left blank]
+          </p>
+          <p style="color: #ddd; padding: 10px 0 0 0; font-size: 14px;">
+            psst! try swiping right and left, 
+            <br />
+            or click that bar looking thing up top!
+          </p>
+          <div id="output">
+          
+          </div>
+        </article>
+      </section>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+      (function($, window, document, undefined){
+        
+        var IS_TOUCH_DEVICE = !!( 'ontouchstart' in window )
+          , $main_frame = $('#main-frame')
+          , $main_account_frame = $('#accounts-frame')
+          , $main_header = $main_frame.find('header')
+          , $main_account = $main_frame.find('#account')
+          , $output = $('#output')
+          , first_move = null, reveal_timeout = null
+          , action_lock = false;
+          
+        $main_account_frame.show();
+        $main_account.data('status', 'reveal');
+        $main_account.click(function(event, override){
+          action_lock = true;
+          var $this = $(this)
+            , status = $this.data('status');
+          
+          if( undefined != override ){
+            status = override;
+            if( status != $this.data('status') ){
+              first_move = null;
+              action_lock = false;
+              return false;
+            }
+          }
+                      
+          if( status == 'hide' ){
+            $main_frame.removeClass('reveal');
+            $main_account_frame.removeClass('reveal');
+            $this.data('status', 'reveal');
+          } else {            
+            $main_frame.addClass('reveal');
+            $main_account_frame.addClass('reveal');
+            $this.data('status', 'hide');
+          }
+          first_move = null;
+          action_lock = false;
+          return false;
+        });
+        
+        function handleWindow(e){
+          e.preventDefault();
+          return false;
+        }
+        window.addEventListener( 'touchstart', handleWindow, false );
+        window.addEventListener( 'touchmove', handleWindow, false );
+        window.addEventListener( 'touchend', handleWindow, false );
+        window.addEventListener( 'touchcancel', handleWindow, false);
+        window.addEventListener( 'touchleave', handleWindow, false);
+        
+        $(window).bind('orientationchange', function(){
+          var $body = $(document.body);
+          if (Math.abs(window.orientation) === 90 || Math.abs(window.orientation) === -90) {
+            $body.addClass('touch-landscape');
+          } else {
+            $body.removeClass('touch-landscape');
+          }
+        });//.trigger('orientationchange');
+        
+        /* */
+        function handleStart(e){
+          e.preventDefault();
+          $main_account.trigger('click');
+          return false;
+        }
+        function handleFrameMove(e){
+          e.preventDefault();
+          if(reveal_timeout != null){
+            clearTimeout(reveal_timeout);
+            reveal_timeout = null;
+          }
+          if( action_lock == false ){
+            if( first_move == null ){
+              first_move = e.touches[0].clientX;
+            } else {
+              var delta = (e.touches[0].clientX - first_move),
+                status = 'hide';
+              //$output.html('move: ' +  delta);
+              // when the users swipes right, process reveal
+              if( delta > 0 ){
+                status = 'reveal';
+              }
+              reveal_timeout = setTimeout(function(){
+                $main_account.trigger('click', [status]);
+              }, 5);
+            }
+          }
+          return false;
+        }
+        function handleEnd(e){
+          e.preventDefault();
+          return false;
+        }
+        $main_account[0].addEventListener( 'touchstart', handleStart, false );
+        $main_frame[0].addEventListener( 'touchmove', handleFrameMove, false );
+        /* * /
+        $main_account.addEventListener( 'touchend', handleEnd, false );
+        $main_account.addEventListener( 'touchcancel', handleWindow, false);
+        $main_account.addEventListener( 'touchleave', handleWindow, false);
+        /* */
+        
+      })(jQuery, window, window.document);
+    </script>
+  </body>
+</html>
